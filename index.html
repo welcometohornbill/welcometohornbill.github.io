@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Welcome to Hornbill Festival</title>
+<meta name="description" content="Your guest guide to the Hornbill Festival 2026, the Naga tribes, Nagaland's history, etiquette, places to visit and useful contacts.">
+<meta property="og:title" content="Welcome to Hornbill Festival">
+<meta property="og:description" content="Guest guide: Hornbill Festival 2026 (1–10 December, Kisama), Naga tribes, map, places and contacts.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#161412">
+<meta name="apple-mobile-web-app-title" content="Hornbill Guide">
+<meta name="application-name" content="Hornbill Guide">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23161412'/%3E%3Ccircle cx='24' cy='34' r='10' fill='%23F7F1E8'/%3E%3Cpath d='M28 26 Q44 18 58 26 Q48 30 32 30Z' fill='%23E0A526'/%3E%3Cpath d='M30 31 Q48 30 60 42 Q46 38 30 37Z' fill='%23E0A526'/%3E%3Ccircle cx='25' cy='32' r='3' fill='%23B3261E'/%3E%3Crect y='52' width='64' height='12' fill='%23B3261E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lib/leaflet.css">
+<style>
+:root{
+  --paper:#FBF8F3; --ink:#1C1A18; --muted:#5E5953; --line:#E6DFD4; --card:#FFFFFF;
+  --red:#B3261E; --black:#161412; --bamboo:#E0A526; --leaf:#2F6B45; --cream:#FFF6E6;
+  --onDark:#F7F1E8;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#1A1715; --ink:#F1EBE2; --muted:#B8B0A6; --line:#36302B; --card:#24201C; --red:#E0493E; --leaf:#6FB185; --cream:#2A241E;}}
+:root[data-theme="dark"]{--paper:#1A1715; --ink:#F1EBE2; --muted:#B8B0A6; --line:#36302B; --card:#24201C; --red:#E0493E; --leaf:#6FB185; --cream:#2A241E;}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:64px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 Karla,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+h1,h2,h3{font-family:"Zilla Slab",Georgia,"Times New Roman",serif;line-height:1.12;margin:0}
+button{font:inherit;cursor:pointer}
+a{color:var(--red)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--bamboo);outline-offset:2px}
+
+/* Woven shawl band */
+.band{height:44px;background-size:88px 44px;animation:weave 22s linear infinite;
+  background-image:
+   repeating-linear-gradient(90deg,transparent 0 21px,rgba(255,255,255,.18) 21px 22px),
+   linear-gradient(135deg,transparent 0 40%,var(--bamboo) 40% 46%,transparent 46% 54%,var(--bamboo) 54% 60%,transparent 60%),
+   linear-gradient(180deg,var(--black) 0 8px,#B3261E 8px 36px,var(--black) 36px 44px)}
+.band.slim{height:18px;background-size:36px 18px;animation:none;
+  background-image:linear-gradient(180deg,var(--black) 0 4px,#B3261E 4px 10px,#fff 10px 12px,var(--black) 12px 18px)}
+@keyframes weave{to{background-position:88px 0}}
+@media (prefers-reduced-motion:reduce){.band{animation:none}}
+
+/* Hero */
+.hero{position:relative;background:var(--black);color:var(--onDark);overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
+.hero .in{max-width:760px;margin:0 auto;padding:26px 22px 90px;position:relative;z-index:1}
+.hero .hills{position:absolute;inset:auto 0 0 0;height:22%;width:100%;z-index:0}
+.hero .bird{display:block;width:min(300px,76vw);margin:0 auto 4px}
+.hero h1{font-size:clamp(2.3rem,9.5vw,3.6rem);text-align:center;letter-spacing:-.01em}
+.hero .sub{text-align:center;color:#D9CFC1;margin:10px auto 0;max-width:30em}
+.count{display:flex;justify-content:center;gap:10px;margin:20px 0 4px;flex-wrap:wrap}
+.count div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);padding:10px 12px;min-width:68px;text-align:center}
+.count b{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.9rem;line-height:1;color:var(--bamboo)}
+.count span{font-size:.8rem;color:#D9CFC1}
+.countlabel{text-align:center;font-weight:600;margin:0}
+.flap{transform-origin:62% 50%;animation:flap 3.6s ease-in-out infinite}
+@keyframes flap{0%,100%{transform:rotate(0)}50%{transform:rotate(-7deg)}}
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){.flap,.float{animation:none}}
+
+/* Nav */
+nav.tabs{position:sticky;top:0;z-index:1000;background:var(--black)}
+nav.tabs .in{display:flex;gap:6px;overflow-x:auto;max-width:760px;margin:0 auto;padding:9px 12px;scrollbar-width:none}
+nav.tabs .in::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--onDark);font-weight:700;padding:7px 14px;border-radius:999px;font-size:15px;border:1px solid rgba(255,255,255,.2)}
+nav.tabs a.on{background:#B3261E;border-color:#B3261E}
+
+main section{padding:38px 0}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+section h2{font-size:clamp(1.8rem,6.5vw,2.4rem);margin-bottom:8px}
+.lead{color:var(--muted);margin:0 0 20px;max-width:36em}
+section.tint{background:var(--cream)}
+section.dark{background:var(--black);color:var(--onDark)}
+section.dark .lead{color:#D2C8BA}
+.kicker{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+section.dark .kicker{color:var(--bamboo)}
+.note{border-left:5px solid var(--bamboo);background:var(--card);padding:12px 16px;margin:18px 0 0;font-size:.95rem}
+section.dark .note{background:rgba(255,255,255,.06);color:var(--onDark)}
+
+/* Today */
+.today{background:var(--black);color:var(--onDark);position:relative;overflow:hidden}
+.today .card{border:2px solid var(--bamboo);padding:20px;position:relative;background:rgba(255,255,255,.04)}
+.today .card h3{font-size:clamp(1.4rem,5.5vw,1.9rem);color:#fff;margin:4px 0 8px}
+.today .card p{margin:0 0 10px;color:#DCD2C4}
+.today .live{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;color:var(--bamboo);text-transform:uppercase;letter-spacing:.08em}
+.today .live i{width:10px;height:10px;border-radius:50%;background:#E0493E;box-shadow:0 0 0 0 rgba(224,73,62,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(224,73,62,0)}100%{box-shadow:0 0 0 0 rgba(224,73,62,0)}}
+@media (prefers-reduced-motion:reduce){.today .live i{animation:none}}
+.slots{display:grid;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.slots li{display:grid;grid-template-columns:84px 1fr;gap:10px;padding:10px 12px;background:rgba(255,255,255,.06);border-left:4px solid #B3261E}
+.slots b{color:var(--bamboo);font-size:.9rem}
+.also{margin-top:16px;display:grid;gap:8px}
+.also div{padding:10px 12px;border:1px dashed rgba(255,255,255,.3);font-size:.95rem;color:#DCD2C4}
+.also b{color:#fff}
+
+/* Festival days */
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:0 0 auto;width:58px;padding:8px 0;border:2px solid var(--ink);background:var(--card);color:var(--ink);text-align:center;line-height:1.1}
+.days button b{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.5rem}
+.days button small{font-size:.72rem;font-weight:700}
+.days button[aria-pressed="true"]{background:#B3261E;border-color:#B3261E;color:#fff}
+.days button.today{box-shadow:0 0 0 3px var(--bamboo)}
+.daycard{background:var(--card);border:2px solid var(--ink);padding:18px;position:relative;min-height:150px}
+.daycard::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:linear-gradient(90deg,#B3261E 0 60%,var(--bamboo) 60% 70%,var(--black) 70%)}
+.daycard h3{font-size:1.4rem;margin:8px 0 6px}
+.daycard p{margin:0 0 8px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips span{font-size:.85rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--cream);border:1px solid var(--line)}
+.daily{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.daily div{padding:14px;color:#fff}
+.daily div:nth-child(1),.daily div:nth-child(6){background:#B3261E}
+.daily div:nth-child(2),.daily div:nth-child(5){background:#2A2521}
+.daily div:nth-child(3){background:#2F6B45}
+.daily div:nth-child(4){background:#8A5A1E}
+.daily .ic{font-size:1.6rem;line-height:1}
+.daily strong{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.05rem;margin:6px 0 2px}
+.daily span{font-size:.88rem;opacity:.92}
+.music{margin-top:22px;background:var(--black);color:var(--onDark);padding:18px;display:grid;grid-template-columns:48px 1fr;gap:14px}
+.music .ic{font-size:2.2rem;line-height:1}
+.music h3{color:var(--bamboo);font-size:1.25rem;margin-bottom:4px}
+.music p{margin:0 0 8px;color:#DCD2C4;font-size:.95rem}
+
+/* Map */
+#map{height:420px;border:2px solid var(--ink);background:var(--cream);position:relative;z-index:0}
+.mapfallback{padding:20px;color:var(--muted)}
+.pins{display:flex;gap:6px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:none}
+.pins::-webkit-scrollbar{display:none}
+.pins button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:999px;font-weight:700;font-size:.9rem}
+.pins button i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.leaflet-popup-content{font-family:Karla,sans-serif;font-size:14px}
+.leaflet-popup-content b{font-family:"Zilla Slab",Georgia,serif;font-size:16px}
+.pin{width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+
+/* Photo slot with woven fallback */
+.ph{position:relative;overflow:hidden;background-size:28px 28px}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.ph .glyph{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem}
+
+/* Tribes gallery */
+.tribes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tribes button{border:1px solid var(--line);padding:0;text-align:left;background:var(--card);color:var(--ink);overflow:hidden;transition:transform .15s}
+.tribes button:hover{transform:translateY(-2px)}
+.tribes .ph{height:120px}
+.tribes .t{padding:10px 12px 12px}
+.tribes .t b{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.2rem}
+.tribes .t small{color:var(--muted);font-weight:600}
+.tribes button[aria-expanded="true"]{outline:3px solid #B3261E}
+.tdetail{grid-column:1/-1;background:var(--black);color:var(--onDark);padding:18px;display:none}
+.tdetail.show{display:block}
+.tdetail h3{font-size:1.5rem;color:var(--bamboo)}
+.tdetail p{margin:8px 0}
+.tdetail .row{font-size:.95rem;color:#D8CEC0}
+.tdetail .row b{color:#fff}
+
+/* Attire */
+.attire{display:grid;gap:12px}
+.attire div{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start;padding:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04)}
+.attire .ic{font-size:2rem;line-height:1}
+.attire h3{font-size:1.15rem;color:var(--bamboo)}
+.attire p{margin:2px 0 0;color:#DCD2C4;font-size:.95rem}
+
+/* Timeline */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:8px;top:4px;bottom:4px;width:4px;background:repeating-linear-gradient(180deg,#B3261E 0 14px,var(--black) 14px 18px,var(--bamboo) 18px 22px,var(--black) 22px 26px)}
+.ev{position:relative;padding-bottom:22px}
+.ev::before{content:"";position:absolute;left:-24px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--paper);border:4px solid #B3261E}
+.ev .yr{font-family:"Zilla Slab",Georgia,serif;font-weight:700;color:var(--red);font-size:1.15rem}
+.ev h3{font-size:1.2rem;margin:2px 0 4px}
+.ev p{margin:0;color:var(--muted);max-width:36em}
+
+/* Etiquette */
+.etq{display:grid;gap:14px}
+@media (min-width:620px){.etq{grid-template-columns:1fr 1fr}}
+.etq > div{background:var(--card);border:2px solid var(--ink);padding:16px}
+.etq h3{font-size:1.3rem;margin-bottom:8px}
+.etq ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.etq li{padding-left:28px;position:relative}
+.etq .do li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:#2F6B45;color:#fff;font-size:.8rem;display:grid;place-items:center;font-weight:700}
+.etq .dont li::before{content:"✕";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:#B3261E;color:#fff;font-size:.8rem;display:grid;place-items:center;font-weight:700}
+.phrases{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.phrases div{background:var(--black);color:var(--onDark);padding:12px}
+.phrases b{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.15rem;color:var(--bamboo)}
+.phrases span{font-size:.88rem;color:#D8CEC0}
+
+/* Places */
+.places{display:grid;gap:14px}
+@media (min-width:620px){.places{grid-template-columns:1fr 1fr}}
+.place{background:var(--card);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column}
+.place .ph{height:150px}
+.place .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.place .dist{font-size:.82rem;font-weight:700;color:var(--leaf)}
+.place h3{font-size:1.2rem}
+.place p{margin:0;color:var(--muted);font-size:.95rem}
+.place a.go{margin-top:auto;padding-top:8px;font-weight:700;text-decoration:none}
+
+/* Quiz */
+.quiz{background:var(--card);border:2px solid var(--ink);padding:18px}
+.quiz .q{font-family:"Zilla Slab",Georgia,serif;font-size:1.25rem;margin:4px 0 12px}
+.quiz .prog{font-weight:700;color:var(--muted);font-size:.9rem}
+.opts{display:grid;gap:8px}
+.opts button{text-align:left;padding:11px 14px;border:2px solid var(--line);background:var(--paper);color:var(--ink);font-weight:600}
+.opts button.right{border-color:#2F6B45;background:#2F6B45;color:#fff}
+.opts button.wrong{border-color:#B3261E;background:#B3261E;color:#fff}
+.quiz .fb{min-height:1.6em;margin:10px 0 0;font-weight:600}
+.next{margin-top:10px;padding:10px 18px;border:0;background:var(--black);color:#fff;font-weight:700}
+
+/* Help */
+.sos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sos a{display:block;text-decoration:none;color:#fff;padding:14px;background:#2A2521}
+.sos a.urgent{background:#B3261E}
+.sos b{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.7rem;line-height:1.1}
+.sos span{font-size:.9rem;opacity:.9}
+.useful{margin-top:16px;display:grid;gap:8px}
+.useful a{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600}
+.useful a em{font-style:normal;color:var(--red);white-space:nowrap}
+
+/* Stay */
+.stay dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin:0;padding:18px;border:1px solid rgba(255,255,255,.18)}
+.stay dt{font-weight:700;color:var(--bamboo)}
+.stay dd{margin:0}
+.stay a{color:#fff}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 20px 34px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="band"></div>
+  <svg class="hills" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 110 L60 70 L110 100 L170 50 L230 95 L290 60 L350 90 L400 65 V160 H0Z" fill="#2B2521"/>
+    <path d="M0 135 L70 105 L140 128 L200 98 L270 130 L330 108 L400 125 V160 H0Z" fill="#3A1714"/>
+    <g fill="#B3261E"><path d="M58 150 L78 118 L98 150Z"/><path d="M300 152 L322 116 L344 152Z"/></g>
+    <g stroke="#E0A526" stroke-width="3"><path d="M74 118 L66 104 M82 118 L90 104"/><path d="M318 116 L310 102 M326 116 L334 102"/></g>
+  </svg>
+  <div class="in">
+    <svg class="bird float" viewBox="0 0 320 170" role="img" aria-label="Illustration of a hornbill in flight">
+      <path d="M60 92 L6 120 L14 100 L2 88 L60 80Z" fill="#F7F1E8"/>
+      <path d="M14 100 L2 88 L22 86 L28 104Z" fill="#161412"/>
+      <path d="M58 78 Q120 60 190 74 Q210 80 214 92 Q170 112 110 106 Q72 102 58 92Z" fill="#2E2A27"/>
+      <g class="flap">
+        <path d="M100 80 Q130 14 196 8 Q176 40 172 72Z" fill="#2E2A27"/>
+        <path d="M118 62 Q146 30 186 20" stroke="#F7F1E8" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M130 72 Q156 46 180 40" stroke="#E0A526" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </g>
+      <path d="M188 72 Q206 60 222 64 L226 90 Q212 96 200 94Z" fill="#F7F1E8"/>
+      <circle cx="228" cy="72" r="16" fill="#2E2A27"/>
+      <circle cx="233" cy="68" r="4" fill="#B3261E"/><circle cx="233" cy="68" r="1.6" fill="#161412"/>
+      <path d="M232 57 Q262 40 300 52 Q290 60 246 64Z" fill="#E0A526"/>
+      <path d="M236 58 Q262 46 292 53" stroke="#161412" stroke-width="2" fill="none"/>
+      <path d="M242 64 Q286 62 316 88 Q280 80 242 80Z" fill="#E0A526"/>
+      <path d="M242 72 Q280 72 306 84" stroke="#B37E12" stroke-width="2" fill="none"/>
+    </svg>
+    <h1>Welcome to Hornbill Festival</h1>
+    <p class="sub">Your guide to the Festival of Festivals, the Naga tribes, their history and dress, local etiquette and the places worth seeing in Nagaland.</p>
+    <div class="count" id="count" aria-live="polite"></div>
+    <p class="countlabel" id="countlabel"></p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Guide sections"><div class="in">
+  <a href="#today">Today</a><a href="#festival">Festival</a><a href="#map-sec">Map</a><a href="#tribes">Tribes</a><a href="#attire">Attire</a><a href="#history">History</a><a href="#etiquette">Etiquette</a><a href="#explore">Explore</a><a href="#quiz">Quiz</a><a href="#help">Help</a><a href="#stay">Your stay</a>
+</div></nav>
+
+<main>
+
+<!-- TODAY AT HORNBILL -->
+<section id="today" class="today"><div class="wrap">
+  <span class="kicker">Today at Hornbill</span>
+  <div class="card" id="todaycard" aria-live="polite"></div>
+</div></section>
+
+<!-- FESTIVAL -->
+<section id="festival"><div class="wrap">
+  <span class="kicker">1–10 December 2026 · Kisama</span>
+  <h2>The Festival of Festivals</h2>
+  <p class="lead">Held at the Naga Heritage Village, Kisama, about 12 km south of Kohima. Every tribe keeps its own morung there. Tap a day to see what to expect.</p>
+  <div class="days" id="days" role="group" aria-label="Festival days"></div>
+  <div class="daycard" id="daycard" aria-live="polite"></div>
+  <div class="note">The official day-by-day programme is published by Tourism Nagaland shortly before the festival, usually in late November. This guide will be updated as soon as it is released.</div>
+
+  <div class="daily">
+    <div><div class="ic">🥁</div><strong>Morning performances</strong><span>War dances, folk songs and ritual re-enactments by each tribe.</span></div>
+    <div><div class="ic">🛖</div><strong>Morung visits</strong><span>Smoked pork, bamboo shoot, rice beer and tribal hospitality.</span></div>
+    <div><div class="ic">🏹</div><strong>Indigenous games</strong><span>Traditional archery, Naga wrestling and more.</span></div>
+    <div><div class="ic">🧺</div><strong>Craft bazaars</strong><span>Handloom shawls, cane, bamboo and wood carving.</span></div>
+    <div><div class="ic">🎸</div><strong>Evening music</strong><span>The Hornbill Music Festival and rock contest.</span></div>
+    <div><div class="ic">🏮</div><strong>Kohima night carnival</strong><span>Street food and shopping after sunset.</span></div>
+  </div>
+
+  <div class="music">
+    <div class="ic">🎤</div>
+    <div>
+      <h3>Who's performing?</h3>
+      <p>The 2026 line-up of bands and artists has not been announced yet. As a curtain-raiser, Tourism Nagaland and the Task Force for Music &amp; Arts are holding <b>Ticket to Hornbill</b> at Talkatora Stadium, New Delhi, on 16–17 October 2026. The winning band earns a slot on the Hornbill Music Festival main stage at Kisama this December.</p>
+      <p>Performer names and timings will appear here once they are officially released.</p>
+    </div>
+  </div>
+</div></section>
+
+<div class="band slim"></div>
+
+<!-- MAP -->
+<section id="map-sec" class="tint"><div class="wrap">
+  <span class="kicker">Find your way</span>
+  <h2>Nagaland map</h2>
+  <p class="lead">Kisama, Kohima's landmarks and day trips. Tap a pin for directions. Locations are approximate.</p>
+  <div id="map"><div class="mapfallback" id="mapfallback">The map needs an internet connection. You can still tap "Directions" on any place below.</div></div>
+  <div class="pins" id="pins"></div>
+</div></section>
+
+<!-- TRIBES -->
+<section id="tribes"><div class="wrap">
+  <span class="kicker">Tribe gallery</span>
+  <h2>Meet the Naga tribes</h2>
+  <p class="lead">Each tribe has its own language, festivals and dress. Every tile carries a woven colour pattern; tap one to learn more.</p>
+  <div class="tribes" id="tribegrid"></div>
+</div></section>
+
+<!-- ATTIRE -->
+<section id="attire" class="dark"><div class="wrap">
+  <span class="kicker">What to look for</span>
+  <h2>Reading Naga attire</h2>
+  <p class="lead">Traditional dress is a language. Colours, patterns and ornaments can show a person's tribe, clan and standing.</p>
+  <div class="attire">
+    <div><span class="ic">🧣</span><div><h3>Shawls</h3><p>The most important garment. Each tribe has its own patterns, and some shawls could only be worn by those who earned them through bravery or by hosting feasts of merit. The Ao warrior shawl, with its painted white band, is a famous example.</p></div></div>
+    <div><span class="ic">🪶</span><div><h3>Headgear</h3><p>Warrior headdresses often carry hornbill feathers, a symbol of valour. The bird is now protected, so many performers use replicas.</p></div></div>
+    <div><span class="ic">📿</span><div><h3>Ornaments</h3><p>Boar tusks, cowrie and conch shells, brass, and treasured necklaces of coloured beads.</p></div></div>
+    <div><span class="ic">👗</span><div><h3>Women's dress</h3><p>Woven wraparound skirts whose colours and stripes vary by tribe, worn with bead necklaces and shawls.</p></div></div>
+    <div><span class="ic">🛡️</span><div><h3>Weapons as dress</h3><p>Spears, daos and shields complete the ceremonial dress for war dances.</p></div></div>
+    <div><span class="ic">✒️</span><div><h3>Tattoos</h3><p>Among the Konyak, facial and body tattoos once marked warriors and life events. A few elders still carry them.</p></div></div>
+  </div>
+  <div class="note">At Kisama, ask at each morung what their dress means. Most people are happy to explain.</div>
+</div></section>
+
+<!-- HISTORY -->
+<section id="history"><div class="wrap">
+  <span class="kicker">Then and now</span>
+  <h2>A short history</h2>
+  <p class="lead">Key moments behind the land and the festival.</p>
+  <div class="timeline">
+    <div class="ev"><div class="yr">Ancient times</div><h3>The morung</h3><p>A dormitory for young men (and in some tribes young women) that served as a school for skills, discipline, history and village defence. The houses at Kisama are modelled on them.</p></div>
+    <div class="ev"><div class="yr">Always</div><h3>The hornbill</h3><p>The Great Indian Hornbill runs through Naga folklore, songs and dress as a symbol of courage, beauty and harmony. It gives the festival its name.</p></div>
+    <div class="ev"><div class="yr">1944</div><h3>The Battle of Kohima</h3><p>From April to June, one of the fiercest battles of the Second World War was fought here, halting the Japanese advance into India. The tennis-court battlefield is now part of the Kohima War Cemetery.</p></div>
+    <div class="ev"><div class="yr">1 Dec 1963</div><h3>Statehood</h3><p>Nagaland became the 16th state of India. That is why the festival opens on 1 December, Statehood Day.</p></div>
+    <div class="ev"><div class="yr">2000</div><h3>Hornbill Festival begins</h3><p>The Government of Nagaland launched the festival to bring all tribes together, build inter-tribal understanding and share Naga heritage with the world.</p></div>
+    <div class="ev"><div class="yr">Today</div><h3>The Festival of Festivals</h3><p>Ten days gather many separate tribal celebrations into one. English is the official language, and Nagamese is widely spoken between tribes.</p></div>
+  </div>
+</div></section>
+
+<div class="band slim"></div>
+
+<!-- ETIQUETTE -->
+<section id="etiquette" class="tint"><div class="wrap">
+  <span class="kicker">Be a good guest</span>
+  <h2>Local etiquette</h2>
+  <p class="lead">Nagas are known for warm hospitality. A few simple courtesies go a long way.</p>
+  <div class="etq">
+    <div class="do"><h3>Please do</h3><ul>
+      <li>Ask before photographing people, especially elders and performers in traditional dress.</li>
+      <li>Accept tea or food when offered, even a small taste. It is a gesture of welcome.</li>
+      <li>Dress warmly and modestly when visiting villages and churches.</li>
+      <li>Buy crafts directly from artisans. It supports village families.</li>
+      <li>Greet with a smile and a handshake. A simple "thank you" is always appreciated.</li>
+      <li>Keep your Inner Line Permit (ILP) or official ID handy while travelling.</li>
+    </ul></div>
+    <div class="dont"><h3>Please don't</h3><ul>
+      <li>Touch ceremonial weapons, drums, headgear or costumes without permission.</li>
+      <li>Litter. Nagaland's villages take great pride in keeping clean.</li>
+      <li>Enter private homes, granaries or morungs unless invited.</li>
+      <li>Make assumptions or jokes about tribal customs or food.</li>
+      <li>Travel on Sunday expecting shops to be open. Many close for church.</li>
+      <li>Underestimate the king chilli. Taste it very carefully.</li>
+    </ul></div>
+  </div>
+  <div class="phrases">
+    <div><b>Kuknalim</b><span>A warm greeting in Ao, widely known across Nagaland</span></div>
+    <div><b>Nagamese</b><span>The friendly common tongue used between tribes</span></div>
+    <div><b>Sunday</b><span>A day of rest and worship for most families</span></div>
+  </div>
+</div></section>
+
+<!-- EXPLORE -->
+<section id="explore"><div class="wrap">
+  <span class="kicker">Beyond Kisama</span>
+  <h2>Places to visit</h2>
+  <p class="lead">Distances are approximate from Kohima. Ask your hosts to arrange a driver.</p>
+  <div class="places" id="places"></div>
+  <div class="note">Also on the official December calendar: the <b>People's Festival</b> at Khezhakeno village (1–10 December) and <b>The Majestic Kapamodzü and Zhavame Village</b> in Phek district (3–4 December).</div>
+</div></section>
+
+<div class="band slim"></div>
+
+<!-- QUIZ -->
+<section id="quiz" class="tint"><div class="wrap">
+  <span class="kicker">Test yourself</span>
+  <h2>How well do you know Nagaland?</h2>
+  <p class="lead">Six quick questions. Everything is on this page.</p>
+  <div class="quiz" id="quizbox"></div>
+</div></section>
+
+<!-- HELP -->
+<section id="help"><div class="wrap">
+  <span class="kicker">Save these</span>
+  <h2>Emergency and useful contacts</h2>
+  <p class="lead">Tap any number to call.</p>
+  <div class="sos">
+    <a class="urgent" href="tel:112"><b>112</b><span>All emergencies</span></a>
+    <a class="urgent" href="tel:108"><b>108</b><span>Ambulance</span></a>
+    <a href="tel:101"><b>101</b><span>Fire</span></a>
+    <a href="tel:1091"><b>1091</b><span>Women helpline</span></a>
+    <a href="tel:1098"><b>1098</b><span>Child helpline</span></a>
+    <a href="tel:18001111363"><b>1800-11-1363</b><span>Tourist infoline (toll-free)</span></a>
+  </div>
+  <div class="useful" id="useful">
+    <a href="tel:+913702243124">Directorate of Tourism, Kohima <em>0370 224 3124</em></a>
+    <a href="mailto:nagalandtourisminfo@gmail.com">Tourism Nagaland email <em>Write</em></a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Naga+Hospital+Authority+Kohima" target="_blank" rel="noopener">Naga Hospital Authority, Kohima <em>Directions</em></a>
+    <a href="https://www.google.com/maps/search/?api=1&query=pharmacy+near+me" target="_blank" rel="noopener">Nearest pharmacy <em>Find</em></a>
+    <a href="https://www.google.com/maps/search/?api=1&query=ATM+near+me" target="_blank" rel="noopener">Nearest ATM <em>Find</em></a>
+    <a href="https://www.google.com/maps/search/?api=1&query=petrol+pump+near+me" target="_blank" rel="noopener">Nearest petrol pump <em>Find</em></a>
+    <a href="https://tourism.nagaland.gov.in/" target="_blank" rel="noopener">Tourism Nagaland official website <em>Open</em></a>
+  </div>
+</div></section>
+
+<!-- STAY -->
+<section id="stay" class="dark stay"><div class="wrap">
+  <span class="kicker">Your cottage</span>
+  <h2>Your stay</h2>
+  <p class="lead">We are glad to have you with us. Please call for anything you need.</p>
+  <dl id="staydl"></dl>
+</div></section>
+</main>
+<div class="band"></div>
+<footer id="foot">Prepared with warmth for our guests, Kohima, Nagaland.</footer>
+
+<script src="lib/leaflet.js"></script>
+<script>
+/* =========================================================
+   EDIT HERE: your cottage details
+   ========================================================= */
+var STAY = {
+  cottage: "[COTTAGE NAME]",
+  host:    "[HOST NAME]",
+  phone:   "[+91 XXXXX XXXXX]",
+  wifi:    "[NETWORK] / [PASSWORD]",
+  breakfast: "[TIME]",
+  hotwater:  "On request, please call the host",
+  taxi:    "[DRIVER NAME, PHONE]"
+};
+
+/* =========================================================
+   EDIT HERE: day-by-day programme. When Tourism Nagaland
+   publishes the official 2026 schedule, add real items to
+   "slots" as ["10:00 AM","Event name"].
+   ========================================================= */
+var DAYS = [
+ {t:"Grand opening",p:"Nagaland Statehood Day. State dignitaries open the festival with every tribe in full traditional dress. The grandest day to attend.",c:["Opening ceremony","All tribes","Arrive early"],slots:[]},
+ {t:"Tribes take the stage",p:"Daily performances in full swing, with morungs open for food and crafts.",c:["War dances","Morung food","Crafts"],slots:[]},
+ {t:"A calmer day to explore",p:"Easier movement than opening day. Ideal for photographs and long conversations at the morungs.",c:["Photography","Indigenous games"],slots:[]},
+ {t:"Games and music",p:"Traditional archery, wrestling and other contests through the day, with music in the evening.",c:["Archery","Wrestling","Concerts"],slots:[]},
+ {t:"Mid-festival energy",p:"Special events and competitions usually cluster in the middle of the festival.",c:["Competitions","Bigger crowds"],slots:[]},
+ {t:"Weekend crowds",p:"Among the busiest days. Start early and keep warm layers handy.",c:["Busy","Plan ahead"],slots:[]},
+ {t:"Culture in full colour",p:"Folk songs, dances and ritual re-enactments continue across the arena.",c:["Folk songs","Dances"],slots:[]},
+ {t:"Shop the bazaars",p:"A good time to buy shawls, cane and bamboo crafts before stalls wind down.",c:["Handloom","Souvenirs"],slots:[]},
+ {t:"Final performances",p:"The last full day of performances before the close.",c:["Last chance","Evening music"],slots:[]},
+ {t:"Closing ceremony",p:"The festival concludes at Kisama. Until next December!",c:["Closing","Farewell"],slots:[]}
+];
+
+(function(){
+var START=new Date("2026-12-01T00:00:00+05:30"), OPEN=new Date("2026-12-01T09:00:00+05:30"), END=new Date("2026-12-10T23:59:59+05:30");
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function dayIndex(now){return Math.min(9,Math.max(0,Math.floor((now-START)/86400000)));}
+
+/* Stay details */
+var dl=document.getElementById("staydl");
+var tel=STAY.phone.replace(/[^\d+]/g,"");
+var rows=[["Cottage",esc(STAY.cottage)],["Host",esc(STAY.host)+(tel.length>6?' · <a href="tel:'+tel+'">'+esc(STAY.phone)+'</a>':' · '+esc(STAY.phone))],["Wi-Fi",esc(STAY.wifi)],["Breakfast",esc(STAY.breakfast)],["Hot water",esc(STAY.hotwater)],["Taxi",esc(STAY.taxi)],["Kisama","About 12 km. Allow extra time during the festival."]];
+dl.innerHTML=rows.map(function(r){return"<dt>"+r[0]+"</dt><dd>"+r[1]+"</dd>"}).join("");
+if(STAY.cottage.indexOf("[")<0)document.getElementById("foot").textContent="Prepared with warmth for the guests of "+STAY.cottage+", Kohima, Nagaland.";
+
+/* Countdown */
+var cEl=document.getElementById("count"),lEl=document.getElementById("countlabel");
+function tick(){
+  var now=new Date();
+  if(now<OPEN){
+    var s=Math.floor((OPEN-now)/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+    cEl.innerHTML='<div><b>'+d+'</b><span>days</span></div><div><b>'+h+'</b><span>hours</span></div><div><b>'+m+'</b><span>minutes</span></div>';
+    lEl.textContent="until Hornbill 2026 opens at Kisama";
+  }else if(now<=END){
+    cEl.innerHTML='<div><b>Day '+(dayIndex(now)+1)+'</b><span>of 10</span></div>';
+    lEl.textContent="The festival is on. Enjoy Kisama today!";
+  }else{cEl.innerHTML="";lEl.textContent="Thank you for celebrating Hornbill 2026 with us.";}
+}
+tick();setInterval(tick,30000);
+
+/* Today at Hornbill */
+function renderToday(){
+  var now=new Date(),el=document.getElementById("todaycard"),html;
+  var also='<div class="also"><div><b>People\'s Festival, Khezhakeno</b> · 1–10 December</div><div><b>Kapamodzü and Zhavame Village</b>, Phek · 3–4 December</div></div>';
+  if(now<START){
+    var d=Math.ceil((START-now)/86400000);
+    html='<span class="live">Coming up</span><h3>The festival opens in '+d+' day'+(d===1?'':'s')+'</h3><p>On 1 December, Statehood Day, every tribe gathers at Kisama in full traditional dress for the grand opening. Once the festival begins, this card shows each day\'s highlights automatically.</p>'+also;
+  }else if(now<=END){
+    var i=dayIndex(now),D=DAYS[i];
+    var sl=D.slots.length?'<ul class="slots">'+D.slots.map(function(x){return'<li><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></li>'}).join("")+'</ul>':'<p style="font-size:.92rem">Detailed timings: see the official programme at the Kisama entrance, or ask your hosts.</p>';
+    html='<span class="live"><i></i>Live · Day '+(i+1)+' of 10</span><h3>'+(i+1)+' December: '+esc(D.t)+'</h3><p>'+esc(D.p)+'</p>'+sl+(i>=2&&i<=3?also:'');
+  }else{
+    html='<span class="live">Until next year</span><h3>Hornbill 2026 has concluded</h3><p>Thank you for celebrating with us. The festival returns every year from 1 to 10 December.</p>';
+  }
+  el.innerHTML=html;
+}
+renderToday();setInterval(renderToday,60000);
+
+/* Day picker */
+var dEl=document.getElementById("days"),card=document.getElementById("daycard"),now=new Date(),live=now>=START&&now<=END,cur=live?dayIndex(now):0;
+DAYS.forEach(function(d,i){
+  var b=document.createElement("button");b.innerHTML="<b>"+(i+1)+"</b><small>DEC</small>";
+  b.setAttribute("aria-label",(i+1)+" December");if(live&&i===cur)b.classList.add("today");
+  b.onclick=function(){show(i)};dEl.appendChild(b);
+});
+function show(i){
+  [].forEach.call(dEl.children,function(b,j){b.setAttribute("aria-pressed",j===i)});
+  var d=DAYS[i];
+  card.innerHTML='<h3>'+(i+1)+' December: '+esc(d.t)+'</h3><p>'+esc(d.p)+'</p><div class="chips">'+d.c.map(function(x){return"<span>"+esc(x)+"</span>"}).join("")+'</div>';
+}
+show(cur);
+
+/* Places (map + cards). Photos: put your own pictures in photos/places/<id>.jpg */
+var P=[
+ {id:"kisama",n:"Naga Heritage Village, Kisama",g:"🪶",d:"About 12 km south",t:"The festival grounds, with a morung for every tribe and the main performance arena.",lat:25.6180,lng:94.1040,c:"#B3261E"},
+ {id:"war-cemetery",n:"Kohima War Cemetery",g:"🕊️",d:"In Kohima",t:"A peaceful, moving memorial on the 1944 battlefield, with views over the town.",lat:25.6680,lng:94.1066,c:"#161412"},
+ {id:"cathedral",n:"Cathedral of Mary Help of Christians",g:"⛪",d:"In Kohima",t:"A hilltop cathedral with a large carved wooden cross inside.",lat:25.6610,lng:94.0960,c:"#161412"},
+ {id:"museum",n:"Nagaland State Museum",g:"🏛️",d:"In Kohima",t:"Dress, weapons, jewellery and model villages of all tribes. Great before visiting Kisama.",lat:25.6800,lng:94.1170,c:"#161412"},
+ {id:"market",n:"Kohima local market",g:"🌶️",d:"In Kohima",t:"Smoked meats, river snails, fresh king chillies and seasonal produce.",lat:25.6740,lng:94.1080,c:"#161412"},
+ {id:"khonoma",n:"Khonoma Green Village",g:"🌾",d:"About 20 km",t:"A historic Angami village of terraced fields and stone gateways, known as India's first green village.",lat:25.6500,lng:94.0220,c:"#2F6B45"},
+ {id:"dzukou",n:"Dzükou Valley",g:"⛰️",d:"About 25–30 km to the trailhead",t:"A famous high valley trek. In December expect frost and very cold nights. Go with a guide.",lat:25.5580,lng:94.0700,c:"#2F6B45"},
+ {id:"touphema",n:"Touphema Village",g:"🛖",d:"About 40 km",t:"A community-run tourism village with traditional huts and village life.",lat:25.7650,lng:94.2150,c:"#2F6B45"},
+ {id:"khezhakeno",n:"Khezhakeno Village",g:"🎉",d:"Phek district",t:"Hosts the People's Festival, 1–10 December, focused on people-to-people interaction.",lat:25.5400,lng:94.2600,c:"#8A5A1E"},
+ {id:"kachari",n:"Kachari Ruins, Dimapur",g:"🗿",d:"About 75 km",t:"Carved stone pillars from the old Kachari kingdom, near the airport and railhead.",lat:25.9060,lng:93.7340,c:"#8A5A1E"}
+];
+function dirURL(p){return"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p.n+", Nagaland")}
+function photoSlot(src,glyph,c1,c2){
+  return'<div class="ph" style="background-color:'+c1+';background-image:linear-gradient(135deg,transparent 0 42%,'+c2+' 42% 50%,transparent 50% 92%,'+c2+' 92%),repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 2px,transparent 2px 7px)"><span class="glyph" aria-hidden="true">'+glyph+'</span><img src="'+src+'" alt="" loading="lazy" onerror="this.remove()"></div>';
+}
+var pl=document.getElementById("places");
+pl.innerHTML=P.map(function(p){
+  return'<div class="place">'+photoSlot("photos/places/"+p.id+".jpg",p.g,p.c,"#E0A526")+'<div class="body"><span class="dist">'+esc(p.d)+'</span><h3>'+esc(p.n)+'</h3><p>'+esc(p.t)+'</p><a class="go" href="'+dirURL(p)+'" target="_blank" rel="noopener">Directions →</a></div></div>';
+}).join("");
+
+/* Map */
+var map=null,markers=[];
+if(window.L){
+  document.getElementById("mapfallback").remove();
+  map=L.map("map",{scrollWheelZoom:false,tap:true}).setView([25.66,94.08],10);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+  P.forEach(function(p){
+    var ic=L.divIcon({className:"",html:'<div class="pin" style="background:'+p.c+'"></div>',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-24]});
+    var m=L.marker([p.lat,p.lng],{icon:ic,title:p.n}).addTo(map).bindPopup('<b>'+esc(p.n)+'</b><br>'+esc(p.d)+'<br><a href="'+dirURL(p)+'" target="_blank" rel="noopener">Directions →</a>');
+    markers.push(m);
+  });
+  map.fitBounds(L.latLngBounds(P.map(function(p){return[p.lat,p.lng]})),{padding:[24,24]});
+}
+var pins=document.getElementById("pins");
+P.forEach(function(p,i){
+  var b=document.createElement("button");b.innerHTML='<i style="background:'+p.c+'"></i>'+esc(p.n.split(",")[0]);
+  b.onclick=function(){if(map){map.setView([p.lat,p.lng],13);markers[i].openPopup();}else{window.open(dirURL(p),"_blank");}};
+  pins.appendChild(b);
+});
+
+/* Tribes gallery. Photos: photos/tribes/<name>.jpg (lowercase, hyphens) */
+var T=[
+ ["Angami","Kohima","Skilled in terraced rice farming on steep hills. Their village Khonoma is known as India's first green village.","Sekrenyi (February)","Black shawls with coloured bands; white kilts with cowrie decoration",["#161412","#B3261E"]],
+ ["Ao","Mokokchung","Among the first Naga communities to embrace Christianity and formal education, with a strong village-council tradition.","Moatsü (May)","The Tsüngkotepsü warrior shawl with a painted white band",["#B3261E","#161412"]],
+ ["Chakhesang","Phek","The name joins three groups: Chokri, Khezha and Sangtam. Known for weaving and farming.","Sükrünyé (January), Tsükhénye (April)","",["#161412","#E0A526"]],
+ ["Chang","Tuensang","A people of eastern Nagaland with a rich tradition of folk songs and oral history.","Naknyulüm (July)","",["#B3261E","#E0A526"]],
+ ["Dimasa Kachari","Dimapur","Descendants of the Kachari kingdom that ruled from Dimapur, where its carved stone pillars still stand.","Bushu","",["#2F6B45","#E0A526"]],
+ ["Khiamniungan","Noklak","Live along the Myanmar border in some of Nagaland's most remote hill country.","Tsokum (October)","",["#161412","#2F6B45"]],
+ ["Konyak","Mon","Famous for hereditary chiefs (the Angh) and elders with facial tattoos from the head-hunting era. Longwa village sits on the India–Myanmar border.","Aoleang (April)","Tattoos, brass ornaments, headgear with hornbill feathers and boar tusks",["#161412","#B3261E"]],
+ ["Kuki","Peren, Dimapur","Spread across several districts and neighbouring states, with a strong tradition of song and dance.","Mim Kut (January)","",["#B3261E","#2F6B45"]],
+ ["Lotha","Wokha","Their district includes Doyang, famous for the huge autumn gathering of migrating Amur falcons, now a conservation success.","Tokhü Emong (November)","",["#2F6B45","#B3261E"]],
+ ["Phom","Longleng","Known for fine pottery and bamboo craft.","Monyü (April)","",["#8A5A1E","#E0A526"]],
+ ["Pochury","Phek (Meluri)","A smaller tribe of south-eastern Nagaland, closely tied to the land around Meluri.","Yemshe (October)","",["#2F6B45","#161412"]],
+ ["Rengma","Tseminyü","Their homeland lies north of Kohima, with proud harvest traditions.","Ngada (November)","",["#E0A526","#161412"]],
+ ["Sangtam","Kiphire","Their district includes Mount Saramati, the highest peak in Nagaland.","Mungmung (September)","",["#161412","#F7F1E8"]],
+ ["Sumi","Zunheboto","Renowned warriors, with one of the most powerful war dances seen at Hornbill.","Tuluni (July), Ahuna (November)","",["#B3261E","#E0A526"]],
+ ["Tikhir","Noklak, Tuensang","One of the most recently recognised Naga tribes, from the eastern districts.","","",["#2F6B45","#E0A526"]],
+ ["Yimkhiung","Shamator","A people of eastern Nagaland with distinct dances and a strong farming calendar.","Metümnyo (August)","",["#161412","#2F6B45"]],
+ ["Zeliang","Peren","The name joins the Zeme and Liangmai peoples. Home to Ntangki National Park.","Hega (February)","",["#E0A526","#B3261E"]]
+];
+var grid=document.getElementById("tribegrid"),panel=document.createElement("div"),open=-1;
+panel.className="tdetail";panel.setAttribute("aria-live","polite");
+T.forEach(function(t,i){
+  var b=document.createElement("button");b.setAttribute("aria-expanded","false");
+  var slug=t[0].toLowerCase().replace(/[^a-z]+/g,"-");
+  b.innerHTML=photoSlot("photos/tribes/"+slug+".jpg","",t[5][0],t[5][1])+'<div class="t"><b>'+esc(t[0])+'</b><small>'+esc(t[1])+'</small></div>';
+  b.onclick=function(){toggle(i,b)};grid.appendChild(b);
+});
+function toggle(i,b){
+  [].forEach.call(grid.querySelectorAll("button"),function(x){x.setAttribute("aria-expanded","false")});
+  if(open===i){panel.classList.remove("show");open=-1;return;}
+  open=i;b.setAttribute("aria-expanded","true");var t=T[i];
+  panel.innerHTML='<h3>'+esc(t[0])+'</h3><div class="row"><b>Home:</b> '+esc(t[1])+'</div><p>'+esc(t[2])+'</p>'+(t[3]?'<div class="row"><b>Festival:</b> '+esc(t[3])+'</div>':'')+(t[4]?'<div class="row"><b>Look for:</b> '+esc(t[4])+'</div>':'');
+  var btns=grid.querySelectorAll("button"),n=Math.max(1,Math.floor((grid.clientWidth+10)/160)),end=Math.min(btns.length-1,Math.floor(i/n)*n+n-1);
+  btns[end].after(panel);panel.classList.add("show");
+}
+
+/* Quiz */
+var Q=[
+ ["When did Nagaland become a state of India?",["15 August 1947","1 December 1963","26 January 1972"],1,"Nagaland became the 16th state on 1 December 1963."],
+ ["Where is the Hornbill Festival held?",["Kisama Heritage Village","Dimapur stadium","Mokokchung town"],0,"At the Naga Heritage Village, Kisama, about 12 km from Kohima."],
+ ["Which tribe is famous for its tattooed elders and hereditary chiefs?",["Konyak","Angami","Lotha"],0,"The Konyak of Mon district."],
+ ["What was a morung?",["A rice-beer pot","A youth dormitory and place of learning","A war drum"],1,"The morung was a school for skills, history and defence."],
+ ["In which year did the Hornbill Festival begin?",["1963","1985","2000"],2,"It was launched by the state government in 2000."],
+ ["Which Second World War battle was fought here in 1944?",["Battle of Kohima","Battle of Plassey","Battle of Burma Road"],0,"The Battle of Kohima halted the Japanese advance into India."]
+];
+var qb=document.getElementById("quizbox"),qi=0,score=0;
+function renderQ(){
+  if(qi>=Q.length){
+    var msg=score===6?"Perfect! You are an honorary Naga storyteller.":score>=4?"Wonderful! You know Nagaland well.":"Good start. The festival will teach you the rest!";
+    qb.innerHTML='<div class="prog">Your score</div><div class="q">'+score+' of 6. '+msg+'</div><button class="next" id="again">Play again</button>';
+    document.getElementById("again").onclick=function(){qi=0;score=0;renderQ()};return;
+  }
+  var q=Q[qi];
+  qb.innerHTML='<div class="prog">Question '+(qi+1)+' of 6</div><div class="q">'+q[0]+'</div><div class="opts">'+q[1].map(function(o,j){return'<button data-j="'+j+'">'+o+'</button>'}).join("")+'</div><p class="fb" aria-live="polite"></p>';
+  [].forEach.call(qb.querySelectorAll(".opts button"),function(b){
+    b.onclick=function(){
+      var j=+b.dataset.j,all=qb.querySelectorAll(".opts button");
+      [].forEach.call(all,function(x){x.disabled=true});all[q[2]].classList.add("right");
+      if(j===q[2]){score++;qb.querySelector(".fb").textContent="Correct! "+q[3];}
+      else{b.classList.add("wrong");qb.querySelector(".fb").textContent="Not quite. "+q[3];}
+      var nx=document.createElement("button");nx.className="next";nx.textContent=qi<5?"Next question":"See my score";
+      nx.onclick=function(){qi++;renderQ()};qb.appendChild(nx);
+    };
+  });
+}
+renderQ();
+
+/* Active nav */
+var links=document.querySelectorAll("nav.tabs a");
+if("IntersectionObserver" in window){
+  var ob=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){
+      var on=a.getAttribute("href")==="#"+e.target.id;a.classList.toggle("on",on);
+      if(on)a.parentNode.scrollTo({left:a.offsetLeft-20,behavior:"smooth"});
+    })}
+  })},{rootMargin:"-45% 0px -50% 0px"});
+  document.querySelectorAll("main section[id]").forEach(function(s){ob.observe(s)});
+}
+})();
+</script>
+</body>
+</html>
