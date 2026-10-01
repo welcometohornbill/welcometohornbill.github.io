@@ -777,11 +777,11 @@ section.dark .note{background:rgba(255,255,255,.06);color:var(--onDark)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .chips span{font-size:.85rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--cream);border:1px solid var(--line)}
 .daily{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
-.daily div{padding:14px;color:#fff}
-.daily div:nth-child(1),.daily div:nth-child(6){background:#B3261E}
-.daily div:nth-child(2),.daily div:nth-child(5){background:#2A2521}
-.daily div:nth-child(3){background:#2F6B45}
-.daily div:nth-child(4){background:#8A5A1E}
+.daily > div{padding:14px;color:#fff}
+.daily > div:nth-child(1),.daily > div:nth-child(6){background:#B3261E}
+.daily > div:nth-child(2),.daily > div:nth-child(5){background:#2A2521}
+.daily > div:nth-child(3){background:#2F6B45}
+.daily > div:nth-child(4){background:#8A5A1E}
 .daily .ic{font-size:1.6rem;line-height:1}
 .daily strong{display:block;font-family:"Zilla Slab",Georgia,serif;font-size:1.05rem;margin:6px 0 2px}
 .daily span{font-size:.88rem;opacity:.92}
@@ -824,7 +824,7 @@ section.dark .note{background:rgba(255,255,255,.06);color:var(--onDark)}
 
 /* Attire */
 .attire{display:grid;gap:12px}
-.attire div{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start;padding:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04)}
+.attire > div{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start;padding:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04)}
 .attire .ic{font-size:2rem;line-height:1}
 .attire h3{font-size:1.15rem;color:var(--bamboo)}
 .attire p{margin:2px 0 0;color:#DCD2C4;font-size:.95rem}
@@ -1064,7 +1064,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:22px 20px 3
 <section id="quiz" class="tint"><div class="wrap">
   <span class="kicker">Test yourself</span>
   <h2>How well do you know Nagaland?</h2>
-  <p class="lead">Six quick questions. Everything is on this page.</p>
+  <p class="lead">Six quick questions, different every time you visit. Everything is on this page.</p>
   <div class="quiz" id="quizbox"></div>
 </div></section>
 
@@ -1281,36 +1281,83 @@ function toggle(i,b){
   btns[end].after(panel);panel.classList.add("show");
 }
 
-/* Quiz */
-var Q=[
- ["When did Nagaland become a state of India?",["15 August 1947","1 December 1963","26 January 1972"],1,"Nagaland became the 16th state on 1 December 1963."],
- ["Where is the Hornbill Festival held?",["Kisama Heritage Village","Dimapur stadium","Mokokchung town"],0,"At the Naga Heritage Village, Kisama, about 12 km from Kohima."],
- ["Which tribe is famous for its tattooed elders and hereditary chiefs?",["Konyak","Angami","Lotha"],0,"The Konyak of Mon district."],
- ["What was a morung?",["A rice-beer pot","A youth dormitory and place of learning","A war drum"],1,"The morung was a school for skills, history and defence."],
- ["In which year did the Hornbill Festival begin?",["1963","1985","2000"],2,"It was launched by the state government in 2000."],
- ["Which Second World War battle was fought here in 1944?",["Battle of Kohima","Battle of Plassey","Battle of Burma Road"],0,"The Battle of Kohima halted the Japanese advance into India."]
+/* Quiz: a fresh random set of questions on every visit */
+var POOL=[
+ ["When did Nagaland become a state of India?","1 December 1963",["15 August 1947","26 January 1972"],"Nagaland became the 16th state of India on 1 December 1963."],
+ ["Where is the Hornbill Festival held?","Kisama Heritage Village",["Dimapur stadium","Mokokchung town"],"At the Naga Heritage Village, Kisama, about 12 km from Kohima."],
+ ["Which tribe is famous for its tattooed elders and hereditary chiefs?","Konyak",["Angami","Lotha"],"The Konyak of Mon district."],
+ ["What was a morung?","A youth dormitory and place of learning",["A rice-beer pot","A war drum"],"The morung was a school for skills, history and defence."],
+ ["In which year did the Hornbill Festival begin?","2000",["1963","1985"],"It was launched by the state government in 2000."],
+ ["Which Second World War battle was fought here in 1944?","Battle of Kohima",["Battle of Plassey","Battle of Burma Road"],"The Battle of Kohima halted the Japanese advance into India."],
+ ["How many days does the Hornbill Festival run?","10 days",["3 days","7 days"],"It runs every year from 1 to 10 December."],
+ ["Roughly how far is Kisama from Kohima?","About 12 km",["About 2 km","About 75 km"],"Kisama lies about 12 km south of Kohima."],
+ ["Why is Hornbill called the Festival of Festivals?","It gathers many tribal festivals into one",["It is the oldest festival in India","It is held in every district"],"It brings many separate tribal celebrations together in ten days."],
+ ["Which bird gives the festival its name?","Great Indian Hornbill",["Amur falcon","Peacock"],"The hornbill runs through Naga folklore, songs and dress."],
+ ["What is the capital of Nagaland?","Kohima",["Dimapur","Mokokchung"],"Kohima is the capital; Dimapur is the main railhead."],
+ ["What is the official language of Nagaland?","English",["Hindi","Nagamese"],"English is official; Nagamese is the common tongue between tribes."],
+ ["Which language do different Naga tribes often use to talk to each other?","Nagamese",["Sanskrit","Ao"],"Nagamese is the friendly common tongue."],
+ ["Khonoma village is known as India's first what?","Green village",["Smart village","Digital village"],"Khonoma is celebrated for its community conservation."],
+ ["Which tribe does Khonoma village belong to?","Angami",["Sumi","Phom"],"Khonoma is a historic Angami village."],
+ ["Sekrenyi is a festival of which tribe?","Angami",["Konyak","Ao"],"The Angami celebrate Sekrenyi in February."],
+ ["Moatsü is a festival of which tribe?","Ao",["Lotha","Chang"],"The Ao celebrate Moatsü in May."],
+ ["The Tsüngkotepsü warrior shawl belongs to which tribe?","Ao",["Kuki","Rengma"],"Its painted white band is a famous Ao design."],
+ ["What is the highest peak in Nagaland?","Mount Saramati",["Japfü Peak","Kapamodzü"],"Saramati is in Kiphire district."],
+ ["The Doyang area in Wokha is famous for which visitors?","Amur falcons",["Siberian cranes","Flamingos"],"Huge flocks gather there each autumn."],
+ ["Wokha district is home to which tribe?","Lotha",["Sangtam","Pochury"],"The Lotha live in and around Wokha."],
+ ["Mon district is home to which tribe?","Konyak",["Zeliang","Chakhesang"],"Mon is the Konyak heartland."],
+ ["What is a Konyak hereditary chief called?","Angh",["Raja","Gaonbura"],"The Angh is the traditional Konyak chief."],
+ ["Longwa village lies on India's border with which country?","Myanmar",["Bhutan","Bangladesh"],"The chief's house straddles the India–Myanmar border."],
+ ["The carved stone pillars of the Kachari Ruins are in which city?","Dimapur",["Kohima","Tuensang"],"They date from the old Kachari kingdom."],
+ ["The name Chakhesang combines which three groups?","Chokri, Khezha and Sangtam",["Ao, Lotha and Sumi","Zeme, Liangmai and Rongmei"],"Chak-he-sang is formed from all three names."],
+ ["The name Zeliang joins which two peoples?","Zeme and Liangmai",["Ao and Sumi","Angami and Rengma"],"Ze-liang is formed from both names."],
+ ["Ntangki National Park is in which district?","Peren",["Mon","Longleng"],"Peren is the Zeliang homeland."],
+ ["Which famous spot in the Kohima War Cemetery saw fierce fighting?","The tennis court",["The cathedral steps","The railway station"],"The 1944 tennis court battle is part of the cemetery today."],
+ ["What should you expect at Dzükou Valley in December?","Frost and very cold nights",["Monsoon rain","Desert heat"],"Go with a guide and dress very warmly."],
+ ["Which tribe is renowned for one of Hornbill's most powerful war dances?","Sumi",["Phom","Tikhir"],"The Sumi are famed as warriors."],
+ ["Tuluni is a festival of which tribe?","Sumi",["Angami","Kuki"],"The Sumi celebrate Tuluni in July."],
+ ["Aoleang is a festival of which tribe?","Konyak",["Ao","Rengma"],"The Konyak celebrate Aoleang in April."],
+ ["Kuknalim, a popular greeting, comes from which language?","Ao",["Angami","Sumi"],"It is widely known across Nagaland."],
+ ["What is special about the Naga king chilli?","One of the hottest chillies in the world",["It is completely sweet","It only grows in winter"],"Taste it very carefully!"],
+ ["Hornbill feathers on warrior headgear symbolise what?","Valour",["Wealth only","Rainfall"],"Today many performers use replicas, as the bird is protected."],
+ ["The Phom tribe is known for which crafts?","Pottery and bamboo craft",["Silk weaving","Brass casting"],"The Phom live in Longleng district."],
+ ["Mungmung is a festival of which tribe?","Sangtam",["Lotha","Pochury"],"Its name means \"togetherness forever\"."],
+ ["Hega is a festival of which tribe?","Zeliang",["Chang","Yimkhiung"],"The Zeliang celebrate Hega in February."],
+ ["Nagaland was which number state of India?","16th",["10th","22nd"],"It became the 16th state in 1963."],
+ ["Where was Ticket to Hornbill 2026, the festival's curtain-raiser, held?","Talkatora Stadium, New Delhi",["Wankhede Stadium, Mumbai","Salt Lake Stadium, Kolkata"],"The winning band earns a slot at the Hornbill Music Festival."],
+ ["What does the festival opening date, 1 December, also mark?","Nagaland Statehood Day",["Christmas Eve","Republic Day"],"The festival opens on Statehood Day."]
 ];
-var qb=document.getElementById("quizbox"),qi=0,score=0;
+var QN=6,qb=document.getElementById("quizbox"),qi=0,score=0,Q=[],lastSet=[];
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function newRound(){
+  var seen=[];try{seen=JSON.parse(localStorage.getItem("hbQuizSeen")||"[]")}catch(e){}
+  var ids=POOL.map(function(_,i){return i});
+  var fresh=shuffle(ids.filter(function(i){return seen.indexOf(i)<0&&lastSet.indexOf(i)<0}));
+  if(fresh.length<QN){seen=[];fresh=fresh.concat(shuffle(ids.filter(function(i){return fresh.indexOf(i)<0&&lastSet.indexOf(i)<0})))}
+  var pick=fresh.slice(0,QN);lastSet=pick;
+  try{localStorage.setItem("hbQuizSeen",JSON.stringify(seen.concat(pick).slice(-36)))}catch(e){}
+  Q=pick.map(function(i){var p=POOL[i],opts=shuffle([p[1]].concat(p[2]));return[p[0],opts,opts.indexOf(p[1]),p[3]]});
+  qi=0;score=0;renderQ();
+}
 function renderQ(){
   if(qi>=Q.length){
-    var msg=score===6?"Perfect! You are an honorary Naga storyteller.":score>=4?"Wonderful! You know Nagaland well.":"Good start. The festival will teach you the rest!";
-    qb.innerHTML='<div class="prog">Your score</div><div class="q">'+score+' of 6. '+msg+'</div><button class="next" id="again">Play again</button>';
-    document.getElementById("again").onclick=function(){qi=0;score=0;renderQ()};return;
+    var msg=score===QN?"Perfect! You are an honorary Naga storyteller.":score>=4?"Wonderful! You know Nagaland well.":"Good start. The festival will teach you the rest!";
+    qb.innerHTML='<div class="prog">Your score</div><div class="q">'+score+' of '+QN+'. '+msg+'</div><button class="next" id="again">Play with new questions</button>';
+    document.getElementById("again").onclick=newRound;return;
   }
   var q=Q[qi];
-  qb.innerHTML='<div class="prog">Question '+(qi+1)+' of 6</div><div class="q">'+q[0]+'</div><div class="opts">'+q[1].map(function(o,j){return'<button data-j="'+j+'">'+o+'</button>'}).join("")+'</div><p class="fb" aria-live="polite"></p>';
+  qb.innerHTML='<div class="prog">Question '+(qi+1)+' of '+QN+'</div><div class="q">'+esc(q[0])+'</div><div class="opts">'+q[1].map(function(o,j){return'<button data-j="'+j+'">'+esc(o)+'</button>'}).join("")+'</div><p class="fb" aria-live="polite"></p>';
   [].forEach.call(qb.querySelectorAll(".opts button"),function(b){
     b.onclick=function(){
       var j=+b.dataset.j,all=qb.querySelectorAll(".opts button");
       [].forEach.call(all,function(x){x.disabled=true});all[q[2]].classList.add("right");
       if(j===q[2]){score++;qb.querySelector(".fb").textContent="Correct! "+q[3];}
       else{b.classList.add("wrong");qb.querySelector(".fb").textContent="Not quite. "+q[3];}
-      var nx=document.createElement("button");nx.className="next";nx.textContent=qi<5?"Next question":"See my score";
+      var nx=document.createElement("button");nx.className="next";nx.textContent=qi<QN-1?"Next question":"See my score";
       nx.onclick=function(){qi++;renderQ()};qb.appendChild(nx);
     };
   });
 }
-renderQ();
+newRound();
 
 /* Active nav */
 var links=document.querySelectorAll("nav.tabs a");
